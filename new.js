@@ -1,5 +1,6 @@
 import ollama from 'ollama'
 import readline from 'readline';
+import {testAdd} from "./sandbox-test.js"
 
 //creates readline interface
 const rl = readline.createInterface({
@@ -61,7 +62,7 @@ async function callChat(userInput) {
 }
 
 function extractResponse(api_response) {
-    const startIndex = api_response.indexOf('javascript');
+    const startIndex = api_response.indexOf('javascript') + 10;
 
     // Find the index of the closing curly brace '}' after the opening brace
     const endIndex = api_response.indexOf('}', startIndex) + 1;
@@ -77,7 +78,7 @@ async function main() {
         const userInput = await getUserInput();
         const response = await callChat(userInput);
         const extracted = extractResponse(response);
-        console.log(extracted);
+        testAdd(extracted);
     } catch (error) {
         console.error('Error in  main: ', error.message);
     } finally {
