@@ -1,5 +1,7 @@
 import ollama from 'ollama'
 import readline from 'readline';
+import * as constants from './problembank.js';
+
 
 //creates readline interface
 const rl = readline.createInterface({
@@ -26,10 +28,45 @@ function prompter(question) {
     });
 }
 
-
-async function getUserInput() {
+async function selectQuestion() {
     try {
-        const userInput = await prompter('Please describe the following function: def foo(a,b): return a + b \n' )
+        const questionNumber = await prompter('Please enter a number between 1 and 4 inclusive to select a question:  ');
+        const num = parseInt(questionNumber);
+        if (num < 1 || num > 4) {
+            throw Error('Number out of bound');
+        } else {
+            return num;
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        throw error;
+    }
+}
+
+function selector(questionNumber) {
+    let questionToAsk = constants.q1;
+    switch (true) {
+        case questionNumber == 1:
+            questionToAsk = constants.q1;
+            break;
+        case questionNumber == 2:
+            questionToAsk = constants.q2;
+            break;
+        case questionNumber == 3:
+            questionToAsk = constants.q3;
+            break;
+        case questionNumber == 4:
+            questionToAsk = constants.q4;
+            break;
+        default:
+            questionToAsk = constants.q1;
+    }
+    return questionToAsk;
+}
+
+async function getUserInput(questionToAsk) {
+    try {
+        const userInput = await prompter('Please describe the following function: ' + questionToAsk + '\n')
         return userInput;
     } catch (error) {
         console.error('Error:', error.message);
@@ -68,21 +105,41 @@ function extractResponse(api_response) {
 
     // Extract the code block from the response based on the indices
     const extractedFunc = api_response.substring(startIndex, endIndex);
-
     return extractedFunc;
 }
 
-async function main() {
+async function promptToContinue() {
     try {
-        const userInput = await getUserInput();
-        const response = await callChat(userInput);
-        const extracted = extractResponse(response);
-        console.log(extracted);
+        const endloop = await prompter("Do you want to continue? (yes/no): \n");
+        return endloop.trim().toLowerCase() == 'yes';
     } catch (error) {
-        console.error('Error in  main: ', error.message);
-    } finally {
-        rl.close();
+        if (error.message == 'User input timed out') {
+            console.error('User input timed out. Exiting...');
+            return false; 
+        } else {
+            throw error; 
+        }
     }
+}
+
+async function main() {
+    let continueFlag = true;
+    do {
+        try {
+            const questionNumber = await selectQuestion();
+            const questionToAsk = selector(questionNumber);
+            const userInput = await getUserInput(questionToAsk);
+            const response = await callChat(userInput);
+            const extracted = extractResponse(response);
+            console.log(extracted);
+            continueFlag = await promptToContinue();
+
+        } catch (error) {
+            console.error('Error in  main: ', error.message);
+            continueFlag = false;
+        } 
+    } while (continueFlag);
+    rl.close();
 }
 
 main().catch(error => {
