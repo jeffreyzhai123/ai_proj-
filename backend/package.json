@@ -2,9 +2,7 @@
   "name": "new.js",
   "type": "module",
   "dependencies": {
-    "axios": "^1.7.2",
     "ollama": "^0.5.1",
-    "react-router-dom": "^6.23.1",
     "sandbox": "^0.8.6"
   }
 }

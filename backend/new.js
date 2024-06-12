@@ -87,7 +87,7 @@ async function callChat(userInput) {
             //must be in array format for messages
             messages: [{
                 role: 'user',
-                content: "Generate a javascript function using the description: " + userInput + ". Name this function TestFunction"
+                content: "Generate a javascript function using the description" + userInput + ". Name this function TestFunction"
             }]
         });
         return response.message.content;
@@ -132,8 +132,8 @@ async function main() {
             const userInput = await getUserInput(questionToAsk);
             const response = await callChat(userInput);
             const extracted = extractResponse(response);
-            const retval = "Result: " + testSwitch(questionNumber, extracted);
-            console.log(retval)
+            testSwitch(questionNumber, extracted);
+            console.log(extracted);
             continueFlag = await promptToContinue();
 
         } catch (error) {
