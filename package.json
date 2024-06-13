@@ -1,8 +1,5 @@
 {
-  "name": "new.js",
-  "type": "module",
   "dependencies": {
-    "ollama": "^0.5.1",
-    "sandbox": "^0.8.6"
+    "react-router-dom": "^6.23.1"
   }
 }

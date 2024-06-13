@@ -7,8 +7,7 @@ import { answerRouter } from './routes/answer.js';
 
 
 const app = express(); // Create an Express application
-const port = 3001; // Define the port number where the server will listen
-
+const port = 3080; // Define the port number where the server will listen
 
 // Middleware setup
 app.use(bodyParser.json()); // Parse incoming JSON requests and populate req.body
