@@ -44,7 +44,7 @@ async function selectQuestion() {
     }
 }
 
-function selector(questionNumber) {
+export function selector(questionNumber) {
     let questionToAsk = constants.q1;
     switch (true) {
         case questionNumber == 1:
@@ -77,7 +77,7 @@ async function getUserInput(questionToAsk) {
 
 //dont use chat function -> too verbose and keeps track of chat history prompting the LLM to 
 //generate different response each time despite being given same input
-async function callChat(userInput) {
+export async function callChat(userInput) {
     //try catch for error handling
     try {
         //using ollama library function to abstract away url formatting 
@@ -98,7 +98,7 @@ async function callChat(userInput) {
     } 
 }
 
-function extractResponse(api_response) {
+export function extractResponse(api_response) {
     const startIndex = api_response.indexOf('javascript') + 10;
 
     // Find the index of the closing curly brace '}' after the opening brace
@@ -132,8 +132,9 @@ async function main() {
             const userInput = await getUserInput(questionToAsk);
             const response = await callChat(userInput);
             const extracted = extractResponse(response);
-            testSwitch(questionNumber, extracted);
-            console.log(extracted);
+            const result = testSwitch(questionNumber, extracted);
+            console.log(extracted); 
+            console.log(result);
             continueFlag = await promptToContinue();
 
         } catch (error) {
@@ -144,7 +145,9 @@ async function main() {
     rl.close();
 }
 
+/*
 main().catch(error => {
     console.error('Unhandled error in main: ', error.message);
     rl.close();
 });
+*/
