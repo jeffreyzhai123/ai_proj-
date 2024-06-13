@@ -31,6 +31,10 @@ function App() {
         body: JSON.stringify({ inputA }), // Convert the input state to a JSON string
       });
 
+      if (!response.ok) {
+        console.log(`HTTP error! Status: ${response.status}`);
+      }
+
       const data = await response.json(); // Get the response text
       setResponseA(data.message); //updates the state of the app component
     } catch (error) {
@@ -51,6 +55,11 @@ function App() {
         },
         body: JSON.stringify({ inputB }), 
       });
+      
+      if (!response.ok) {
+        console.log(`HTTP error! Status: ${response.status}`);
+      }
+
       const data = await response.json(); // Get the response text
       setResponseB(data.message); //updates the state of the app component
     } catch (error) {
