@@ -1,4 +1,5 @@
 import React from 'react'
+import Test from './Test'; // Assuming App.js is in the same directory
 import { SignedIn, SignedOut, SignInButton, SignOutButton, useUser } from '@clerk/clerk-react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -25,6 +26,9 @@ const Home = (props) => {
           <input className={'inputButton'} type="button" value={'Log out'} />
         </SignOutButton>
         {/* Put routes here, buttons here are rendered in after user has logged in */}
+        <div className='Testing'>
+          <Test />
+        </div>
       </SignedIn>
 
       {/* You can also check if a user is logged in or not using the 'user' object from the useUser hook. In this case, a non-undefined user object will render the user's email on the page */}
