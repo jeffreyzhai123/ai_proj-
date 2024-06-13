@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { useUser } from '@clerk/clerk-react'
 //should add useEffect later on to deal with having to make api get calls to request data from backend
 
 function Test() {
@@ -6,6 +8,14 @@ function Test() {
   const [inputB, setInputB] = useState('');
   const [responseA, setResponseA] = useState('');
   const [responseB, setResponseB] = useState('');
+  const { user } = useUser()
+  const navigate = useNavigate()
+
+  const exitButton = () => {
+    if (user) {
+      navigate("/")
+    }
+  }
 
   const handleChangeA = (e) => {
     setInputA(e.target.value); // Update state with the current input value
@@ -22,7 +32,7 @@ function Test() {
     try {
       setResponseA(''); //set response state to an empty string each time 
       
-      const response = await fetch('http://localhost:3001/submit', {
+      const response = await fetch('http://localhost:3080/submit', {
         method: 'POST', // Specify the HTTP method (POST)
         headers: {
           'Content-Type': 'application/json', // Set the Content-Type header to JSON
@@ -43,7 +53,7 @@ function Test() {
     try {
       setResponseB('');
 
-      const response = await fetch('http://localhost:3001/answer', {
+      const response = await fetch('http://localhost:3080/answer', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json', 
@@ -59,6 +69,14 @@ function Test() {
 
   return (
     <div>
+      <div className={'buttonContainer'}>
+        <input
+          className={'inputButton'}
+          type="button"
+          onClick={exitButton}
+          value={"Go Back"}
+        />
+      </div>
       {/* Form A: question selection */}
       <h1>Select a number between 1 and 4 inclusive</h1>
       <form onSubmit={handleSubmitA}>
