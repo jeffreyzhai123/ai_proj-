@@ -12,58 +12,64 @@ function Test() {
   const navigate = useNavigate()
 
   const exitButton = () => {
-    if (user) {
-      navigate("/")
-    }
+    navigate("/")
   }
 
   const handleChangeA = (e) => {
-    setInputA(e.target.value); // Update state with the current input value
+    if (user) {
+      setInputA(e.target.value); // Update state with the current input value
+    }
   };
 
   const handleChangeB = (e) => {
-    setInputB(e.target.value); // Update state with the current input value
+    if (user) {
+      setInputB(e.target.value); // Update state with the current input value
+    }
   };
 
   const handleSubmitA = async (e) => { //e is event object
+    if (user) {
     e.preventDefault(); // Prevent the default form submission behavior
 
     // Send a POST request to the backend server
-    try {
-      setResponseA(''); //set response state to an empty string each time 
-      
-      const response = await fetch('http://localhost:3080/submit', {
-        method: 'POST', // Specify the HTTP method (POST)
-        headers: {
-          'Content-Type': 'application/json', // Set the Content-Type header to JSON
-        },
-        body: JSON.stringify({ inputA }), // Convert the input state to a JSON string
-      });
+      try {
+        setResponseA(''); //set response state to an empty string each time 
 
-      const data = await response.json(); // Get the response text
-      setResponseA(data.message); //updates the state of the app component
-    } catch (error) {
-      console.error('Error submitting data:', error);
+        const response = await fetch('http://localhost:3080/submit', {
+          method: 'POST', // Specify the HTTP method (POST)
+          headers: {
+            'Content-Type': 'application/json', // Set the Content-Type header to JSON
+          },
+          body: JSON.stringify({ inputA }), // Convert the input state to a JSON string
+        });
+
+        const data = await response.json(); // Get the response text
+        setResponseA(data.message); //updates the state of the app component
+      } catch (error) {
+        console.error('Error submitting data:', error);
+      }
     }
   };
 
   const handleSubmitB = async (e) => {
-    e.preventDefault();
+    if (user) {
+      e.preventDefault();
 
-    try {
-      setResponseB('');
+      try {
+        setResponseB('');
 
-      const response = await fetch('http://localhost:3080/answer', {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify({ inputB }), 
-      });
-      const data = await response.json(); // Get the response text
-      setResponseB(data.message); //updates the state of the app component
-    } catch (error) {
-      console.error('Error submitting data:', error);
+        const response = await fetch('http://localhost:3080/answer', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+          body: JSON.stringify({ inputB }), 
+        });
+        const data = await response.json(); // Get the response text
+        setResponseB(data.message); //updates the state of the app component
+      } catch (error) {
+        console.error('Error submitting data:', error);
+      }
     }
   }
 

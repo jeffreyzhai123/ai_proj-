@@ -7,7 +7,7 @@ const Home = (props) => {
   const { user } = useUser()
   const navigate = useNavigate()
 
-  const onButtonClick = () => {
+  const testButton = () => {
     if (user) {
       navigate("/test")
     }
@@ -33,7 +33,7 @@ const Home = (props) => {
         <input
           className={'inputButton'}
           type="button"
-          onClick={onButtonClick}
+          onClick={testButton}
           value={"Go to Test"}
         />
       </div>
