@@ -29,9 +29,9 @@ function Test() {
 
   const handleSubmitA = async (e) => { //e is event object
     if (user) {
-    e.preventDefault(); // Prevent the default form submission behavior
+      e.preventDefault(); // Prevent the default form submission behavior
 
-    // Send a POST request to the backend server
+      // Send a POST request to the backend server
       try {
         setResponseA(''); //set response state to an empty string each time 
 
