@@ -45,6 +45,7 @@ const DropDown = ({ onUserDataReceived }) => {
             </select>
             <p>You selected: {selectedOption}</p>
         </div>
+
     );
 };
 
