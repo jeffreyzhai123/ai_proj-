@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const userAnswer = req.body;
     console.log('Received input:', userAnswer);
-    const ans = await callChat(userAnswer.inputB);
+    const ans = await callChat(userAnswer.input);
     console.log("ans:" + ans);
     const extracted = extractResponse(ans);
     console.log("extracted:" + extracted);
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     //still need to figure out how to return failed tests and generated code together as a json object
   
     //error with frontend msg display 
-    res.json({message: testResult});
+    res.json({code: extracted, test: testResult});
   });
 
   export { router as answerRouter };

@@ -45,7 +45,10 @@ function runTests(code, testCases) {
               return `Test failed: expected ${test.expected}, got ${test.result} for args: ${test.args}`;
             });
 
-            resolve(failureMessages.join('\n'));
+            //.join used to concat all elements in array into a single string with <br> between each element
+            //because this is going to be displayed on the frontend as html elements
+            //need to use <br> to signal line breaks rather than /n
+            resolve(failureMessages.join('<br>'));
           }
         }
       });
