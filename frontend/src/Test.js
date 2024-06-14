@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DropDown from './dropDown.js';
 import SubmissionForm from './submitForm.js';
+import { useUser } from '@clerk/clerk-react'
 
 //should add useEffect later on to deal with having to make api get calls to request data from backend
 
@@ -10,17 +11,20 @@ function Test() {
   const [userSelection, setUserSelection] = useState(null);
   const [result, setResult] = useState("");
   const navigate = useNavigate();
+  const { user }  = useUser();
 
   const exitButton = () => {
-    navigate("/")
+    navigate("/");
   }
   
   const handleUserResponse = (data) => {
     setUserSelection(data.message);
   }
-
+  
   const handleResult = (ans) => {
-    setResult(ans);
+    if (user) {
+      setResult(ans);
+    }
   }
   
   return (
