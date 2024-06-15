@@ -20,7 +20,7 @@ function Test() {
   const handleUserResponse = (data) => {
     setUserSelection(data.message);
   }
-
+  
   const handleResult = (ans) => {
     if (user) {
       setResult(ans);
