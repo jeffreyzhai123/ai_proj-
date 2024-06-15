@@ -62,6 +62,8 @@ function Test() {
         />
       </div>
 
+      {user ? null : <div>Please Log In</div>}
+
     </div>
   );
 }
