@@ -7,9 +7,15 @@ const Home = (props) => {
   const { user } = useUser()
   const navigate = useNavigate()
 
+  const practiceButton = () => {
+    if (user) {
+      navigate("/practice");
+    }
+  }
+
   const testButton = () => {
     if (user) {
-      navigate("/test")
+      navigate("/test");
     }
   }
 
@@ -33,10 +39,17 @@ const Home = (props) => {
         <input
           className={'inputButton'}
           type="button"
-          onClick={testButton}
-          value={"Go to Test"}
+          onClick={practiceButton}
+          value={"Practice"}
+        />
+        <input 
+        className={'inputButton'}
+        type="button"
+        onClick={testButton}
+        value={"Test"}
         />
       </div>
+
         <SignOutButton>
           <input className={'inputButton'} type="button" value={'Log out'} />
         </SignOutButton>

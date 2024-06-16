@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SubmissionForm = ({onResultReceived}) => {
+const SubmissionForm = ({onResultReceived, userSelection}) => {
     const [input, setInput] = useState("");
 
     const handleChange = (e) => {
@@ -15,7 +15,7 @@ const SubmissionForm = ({onResultReceived}) => {
               headers: {
                 'Content-Type': 'application/json', 
               },
-              body: JSON.stringify({ input }), 
+              body: JSON.stringify({ input, userSelection }), 
             });
     
             if (response.ok) {

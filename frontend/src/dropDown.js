@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 
-const DropDown = ({ onUserDataReceived }) => {
+const DropDown = ({ onUserDataReceived, onSelectionChange }) => {
     const [selectedOption, setSelectedOption] = useState('');
     const { user } = useUser();
 
@@ -9,6 +9,7 @@ const DropDown = ({ onUserDataReceived }) => {
         if (user) {
             const value = e.target.value;
             setSelectedOption(value);
+            onSelectionChange(value);
             
             try {
                 const response = await fetch('http://localhost:3080/submit', {
