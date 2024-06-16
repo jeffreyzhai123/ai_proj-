@@ -2,7 +2,7 @@ import express from 'express';
 import { selector } from '../new.js';
 
 const router = express.Router();
-let inputVal = 1;
+let inputVal = 0; //default value is 0 (which is not a correct question id)
 
 router.post('/', (req, res) => {
     const userInput = req.body; // Access the parsed JSON data from the request body

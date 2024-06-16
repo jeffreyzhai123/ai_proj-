@@ -8,12 +8,21 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const userAnswer = req.body;
     console.log('Received input:', userAnswer);
+    let testId = inputVal;
+
+    //if inputVal (used to select tests) has not been updated
+    if(testId == 0) {
+      testId = parseInt(userAnswer.userSelection);
+    }
+
+    console.log(testId);
+
     const ans = await callChat(userAnswer.input);
     console.log("ans:" + ans);
     const extracted = extractResponse(ans);
     console.log("extracted:" + extracted);
   
-    const testResult = await testSwitch(inputVal, extracted);
+    const testResult = await testSwitch(testId, extracted);
     console.log("testResult: ", testResult);
     //still need to figure out how to return failed tests and generated code together as a json object
   

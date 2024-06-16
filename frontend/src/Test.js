@@ -1,65 +1,72 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DropDown from './dropDown.js';
-import SubmissionForm from './submitForm.js';
+import SubmissionForm from './submitForm';
 
-//should add useEffect later on to deal with having to make api get calls to request data from backend
 
-function Test() {
 
-  const [userSelection, setUserSelection] = useState(null);
-  const [result, setResult] = useState("");
-  const navigate = useNavigate();
+function Test () {
+    const navigate = useNavigate();
+    const [currentQuestionNum, setCurrentQuestionNum] = useState(1);
+    const [results, setResults] = useState([]);
 
-  const exitButton = () => {
-    navigate("/")
-  }
-  
-  const handleUserResponse = (data) => {
-    setUserSelection(data.message);
-  }
+    //should change the problembank structure and make 
+    const questions = [
+        "def foo(a,b): return a + b",
+        "def bar(a, b): return a - b",
+        "def ping(a, b): return a * b",
+        "def pong(a, b): return a / b"
+    ];
 
-  const handleResult = (ans) => {
-    setResult(ans);
-  }
-  
-  return (
-    <div>
-      {/* Dropdown menu for question selection */}
-      <div>
-        <h1>Question Selector</h1>
-        <DropDown onUserDataReceived={handleUserResponse}/>
-      </div>
 
-      {/* Submission form, uses conditional rendering (only renders if userSelection is properly updated */}
-      {userSelection && (
-        <div className="response-container">
-          <h2>
-            {userSelection}
-          </h2>
-          <SubmissionForm onResultReceived={handleResult}/>
+    const exitButton = () => {
+        navigate("/")
+      }
+
+    const handleResult = (ans) => {
+        //spreads the old array into a new array and adding the new result 
+        //don't use .push() because for react you want to avoid modifying existing object tp update state
+        setResults([...results, ans]); 
+
+        if (currentQuestionNum < questions.length) {
+            setCurrentQuestionNum(currentQuestionNum + 1);
+        } 
+    };
+
+
+    return (
+        <div>
+            <h1>Test</h1>
+            {/* need to make a function to pull question bank to frontend */}
+            {currentQuestionNum < questions.length ? (
+            <>
+                <div>
+                    <p>{questions[currentQuestionNum - 1]}</p>
+                    <SubmissionForm 
+                    onResultReceived={handleResult}
+                    userSelection={currentQuestionNum.toString()} />
+                </div>
+            </>
+             ) : (
+                <div>
+                    <h2>Test Completed</h2>
+                    <p>Thank you for participating!</p>
+                </div>
+             )}
+            
+            <div className={'buttonContainer'}>
+            <input
+                className={'inputButton'}
+                type="button"
+                onClick={exitButton}
+                value={"Go Back"}
+            />
+            </div>
         </div>
-      )}
-
-      {/* Conditional render to display results */}
-      {result && (
-        <div className='result-container'>
-          <p>{result.code}</p>
-          <div dangerouslySetInnerHTML={{ __html: result.test }} />
-        </div>
-      )}
-
-      <div className={'buttonContainer'}>
-        <input
-          className={'inputButton'}
-          type="button"
-          onClick={exitButton}
-          value={"Go Back"}
-        />
-      </div>
-
-    </div>
-  );
+    );
 }
 
 export default Test;
+
+//some issues for future reference: 
+//1. the only function that can update what tests are run is the dropDown component 
+//2. backend question back is not an array
