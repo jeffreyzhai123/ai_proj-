@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SubmissionForm from './submitForm';
+import DropDown from './dropDown.js';
+import SubmissionForm from './submitForm.js';
+import { useUser } from '@clerk/clerk-react'
 
 
 
@@ -17,20 +19,23 @@ function Test () {
         "def pong(a, b): return a / b"
     ];
 
+  const { user }  = useUser();
 
     const exitButton = () => {
-        navigate("/")
+        navigate("/");
       }
-
+  
     const handleResult = (ans) => {
         //spreads the old array into a new array and adding the new result 
         //don't use .push() because for react you want to avoid modifying existing object tp update state
-        setResults([...results, ans]); 
+        if (user) {
+      setResults([...results, ans]); 
 
         if (currentQuestionNum < questions.length) {
             setCurrentQuestionNum(currentQuestionNum + 1);
         } 
-    };
+      }
+  };
 
 
     return (
@@ -61,7 +66,9 @@ function Test () {
                 value={"Go Back"}
             />
             </div>
-        </div>
+          {user ? null : <div>Please Log In</div>}
+
+    </div>
     );
 }
 
