@@ -101,8 +101,8 @@ export async function callChat(userInput) {
 export function extractResponse(api_response) {
     const startIndex = api_response.indexOf('javascript') + 10;
 
-    // Find the index of the closing curly brace '}' after the opening brace
-    const endIndex = api_response.indexOf('}', startIndex) + 1;
+    // Find the index of the closing backtick '`' that marks the end of the response
+    const endIndex = api_response.indexOf('`', startIndex);
 
     // Extract the code block from the response based on the indices
     const extractedFunc = api_response.substring(startIndex, endIndex);

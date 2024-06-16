@@ -47,7 +47,7 @@ function Practice() {
           </h2>
           <SubmissionForm 
           onResultReceived={handleResult}
-          questionNumber={questionNumber}/>
+          userSelection={questionNumber}/>
         </div>
       )}
 

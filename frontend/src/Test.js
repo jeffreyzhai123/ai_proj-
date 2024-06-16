@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DropDown from './dropDown.js';
 import SubmissionForm from './submitForm.js';
 import { useUser } from '@clerk/clerk-react'
 
@@ -31,7 +30,7 @@ function Test () {
         if (user) {
       setResults([...results, ans]); 
 
-        if (currentQuestionNum < questions.length) {
+        if (currentQuestionNum <= questions.length) {
             setCurrentQuestionNum(currentQuestionNum + 1);
         } 
       }
@@ -42,7 +41,7 @@ function Test () {
         <div>
             <h1>Test</h1>
             {/* need to make a function to pull question bank to frontend */}
-            {currentQuestionNum < questions.length ? (
+            {currentQuestionNum <= questions.length ? (
             <>
                 <div>
                     <p>{questions[currentQuestionNum - 1]}</p>
@@ -55,6 +54,17 @@ function Test () {
                 <div>
                     <h2>Test Completed</h2>
                     <p>Thank you for participating!</p>
+                    <div>
+                        {/* makes new array by taking the elements in the result array and the index num */}
+                        <h3>Results</h3>
+                        {results.map((result, index) => (
+                            <div key={index}>
+                                <p>Question {index + 1}:</p>
+                                <p>{result.code}</p>
+                                <div dangerouslySetInnerHTML={{ __html: result.test }} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
              )}
             
@@ -66,7 +76,6 @@ function Test () {
                 value={"Go Back"}
             />
             </div>
-          {user ? null : <div>Please Log In</div>}
 
     </div>
     );
