@@ -4,7 +4,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.3",
     "ollama": "^0.5.1",
     "sandbox": "^0.8.6"
+  },
+  "scripts": {
+    "start": "node --env-file=config.env server"
   }
 }
