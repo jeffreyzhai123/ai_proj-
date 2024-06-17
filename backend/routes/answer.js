@@ -1,7 +1,6 @@
 import express from 'express';
 import { callChat, extractResponse } from '../new.js'
 import { testSwitch } from '../sandbox-test.js';
-import { inputVal } from './submit.js';
 
 const router = express.Router();
 
