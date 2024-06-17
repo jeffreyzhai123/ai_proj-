@@ -28,12 +28,20 @@ function Test () {
         //spreads the old array into a new array and adding the new result 
         //don't use .push() because for react you want to avoid modifying existing object tp update state
         if (user) {
-      setResults([...results, ans]); 
+            setResults([...results, ans]); 
 
         if (currentQuestionNum <= questions.length) {
             setCurrentQuestionNum(currentQuestionNum + 1);
         } 
       }
+  };
+
+  const calcScore = (arr) => {
+    let total = 0;
+    arr.forEach(element => {
+        total += element.points;
+    });
+    return total;
   };
 
 
@@ -56,6 +64,7 @@ function Test () {
                     <p>Thank you for participating!</p>
                     <div>
                         {/* makes new array by taking the elements in the result array and the index num */}
+                        {/* map function iterates through each ele in the results arr and renders it*/}
                         <h3>Results</h3>
                         {results.map((result, index) => (
                             <div key={index}>
@@ -64,6 +73,10 @@ function Test () {
                                 <div dangerouslySetInnerHTML={{ __html: result.test }} />
                             </div>
                         ))}
+                        <div>
+                            <h3> Total Score Out of {results.length}</h3>
+                            <p>{calcScore(results)}</p>
+                        </div>
                     </div>
                 </div>
              )}
