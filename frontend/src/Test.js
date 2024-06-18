@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SubmissionForm from './submitForm.js';
 import { useUser } from '@clerk/clerk-react'
@@ -9,14 +9,25 @@ function Test () {
     const navigate = useNavigate();
     const [currentQuestionNum, setCurrentQuestionNum] = useState(1);
     const [results, setResults] = useState([]);
+    const [questions, setQuestions] = useState([]);
 
     //should change the problembank structure and make 
-    const questions = [
-        "def foo(a,b): return a + b",
-        "def bar(a, b): return a - b",
-        "def ping(a, b): return a * b",
-        "def pong(a, b): return a / b"
-    ];
+    useEffect(() => {
+        const fetchQuestions = async () => {
+          try {
+            const response = await fetch('http://localhost:3080/database'); // Adjust port if necessary
+            if (!response.ok) {
+              throw new Error('Failed to fetch questions');
+            }
+            const questionsData = await response.json();
+            setQuestions(questionsData);
+          } catch (error) {
+            console.error('Error fetching questions:', error);
+          }
+        };
+    
+        fetchQuestions();
+    }, []);
 
   const { user }  = useUser();
 
@@ -52,7 +63,7 @@ function Test () {
             {currentQuestionNum <= questions.length ? (
             <>
                 <div>
-                    <p>{questions[currentQuestionNum - 1]}</p>
+                    <p>{questions[currentQuestionNum - 1].question}</p>
                     <SubmissionForm 
                     onResultReceived={handleResult}
                     userSelection={currentQuestionNum.toString()} />
