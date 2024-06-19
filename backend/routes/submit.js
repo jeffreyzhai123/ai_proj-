@@ -4,6 +4,7 @@ import { selector } from '../new.js';
 const router = express.Router();
 let inputVal = 0; //default value is 0 (which is not a correct question id)
 
+//this entire thing might not be needed as we no longer need to make a direct request to backend to retrieve questions
 router.post('/', (req, res) => {
     const userInput = req.body; // Access the parsed JSON data from the request body
     console.log('Received input:', userInput); // Log the received data to the console

@@ -32,11 +32,11 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     let newDocument = {
-      name: req.body.name,
-      position: req.body.position,
-      level: req.body.level,
+      user: req.body.user,
+      quiz: req.body.quiz,
+      results: req.body.results,
     };
-    let collection = await db.collection("problem-bank");
+    let collection = await db.collection("quiz-results");
     let result = await collection.insertOne(newDocument);
     res.send(result).status(204);
   } catch (err) {
