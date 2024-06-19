@@ -10,19 +10,15 @@ router.post('/', async (req, res) => {
     let testId = 0;
     let correctness = 0; //0 means wrong, 1 means correct
 
-    //if inputVal (used to select tests) has not been updated
-
-
     const ans = await callChat(userAnswer.input);
-    console.log("ans:" + ans);
+    console.log("ans: " + ans);
     const extracted = extractResponse(ans);
-    console.log("extracted:" + extracted);
+    console.log("extracted: " + extracted);
     testId = parseInt(userAnswer.userSelection);
-    console.log(testId);
+    console.log("testID: ", testId);
 
     const testResult = await testSwitch(testId, extracted);
     console.log("testResult: ", testResult);
-    //still need to figure out how to return failed tests and generated code together as a json object
 
     //updates correctness of the question to 1 if correct and 0 if wrong.
     if(testResult.includes("passed")) {
