@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'; // Import body-parser middleware
 import cors from 'cors'; // Import CORS middleware
 
 import { databaseRouter } from "./routes/database.js";
+import { resultRouter } from './routes/results.js';
 import { submitRouter } from './routes/submit.js';
 import { answerRouter } from './routes/answer.js';
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/submit', submitRouter);
 app.use('/answer', answerRouter);
 app.use("/database", databaseRouter);
+app.use("/results", resultRouter);
 
 // Start the server and make it listen on the defined port
 app.listen(port, () => {
