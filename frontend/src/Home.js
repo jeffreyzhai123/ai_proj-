@@ -19,6 +19,12 @@ const Home = (props) => {
     }
   }
 
+  const statsButton = () => {
+    if (user) {
+      navigate("/stats");
+    }
+  }
+
 
   return (
     <div className="mainContainer">
@@ -47,6 +53,12 @@ const Home = (props) => {
         type="button"
         onClick={testButton}
         value={"Test"}
+        />
+        <input 
+        className={'inputButton'}
+        type="button"
+        onClick={statsButton}
+        value={"Stats"}
         />
       </div>
 
