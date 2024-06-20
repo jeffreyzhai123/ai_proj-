@@ -11,6 +11,9 @@ function Test () {
     const [results, setResults] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true); // Track if questions are loading
+    const [userExistence, setUserExistence] = useState(false);
+    const { user }  = useUser();
+    const user_id = user.id;
     //prevents race conditon where the app thinks quiz ended as the questions array is empty
 
     //should change the problembank structure and make 
@@ -28,11 +31,27 @@ function Test () {
             console.error('Error fetching questions:', error);
           }
         };
-    
-        fetchQuestions();
-    }, []);
 
-  const { user }  = useUser();
+        const fetchUser = async () => {
+          try {
+            const response = await fetch(`http://localhost:3080/results/${user_id}`); // Adjust port if necessary
+            if (response.ok) {
+              await response.json();
+              setUserExistence(true);
+              console.log("user existo");
+            } else {
+              throw new Error('Failed to fetch userid');
+            }
+
+          } catch (error) {
+            console.log("user no existo");
+            setUserExistence(false);
+          }
+        };
+
+        fetchUser()
+        fetchQuestions();
+    }, [user_id, userExistence]);
 
   const exitButton = () => {
       navigate("/");
@@ -62,17 +81,18 @@ function Test () {
   //return array lenght + 1
   //automatically called when quiz is completed
   useEffect(() => {
-    const sendResult = async () => {
+    const createResult = async () => {
       try {
-        const response = await fetch('http://localhost:3080/database', {
+        let newArray = [];
+        newArray.push(results);
+        const response = await fetch('http://localhost:3080/results', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            user: user,
-            quiz: 1,
-            results: results
+            userid: user.id,
+            results: newArray
           })
         });
   
@@ -87,11 +107,37 @@ function Test () {
         console.error('Error:', error);
       }
     };
+
+    const updateResult = async () => {
+      try {
+        const response = await fetch(`http://localhost:3080/results/${user_id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            results: results,
+          }),
+        });
   
-    if (questions.length > 0 && currentQuestionNum > questions.length) {
-      sendResult();
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message}`);
+        }
+  
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
-  }, [currentQuestionNum, questions.length, user, results]);
+  
+    if (questions.length > 0 && currentQuestionNum > questions.length && !userExistence) {
+      createResult();
+    } else if (questions.length > 0 && currentQuestionNum > questions.length && userExistence) {
+      updateResult();
+    }
+  }, [currentQuestionNum, questions.length, user, results, userExistence, user_id]);
 
 
   return (

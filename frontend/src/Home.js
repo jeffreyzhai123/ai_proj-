@@ -29,7 +29,7 @@ const Home = (props) => {
         </div>
         <div>This is the home page.</div>
         <SignInButton>
-          <input className={'inputButton'} type="button" value={'Log in'} />
+          <input className={'inputButton'} type='button' value={'Log in'} />
         </SignInButton>
       </SignedOut>
 
